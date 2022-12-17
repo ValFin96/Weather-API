@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1{
+    font-size: 33px;
+    font-weight: 700;
+}
+button{
+    height:37px;
+    border-radius: 5px;
+}
+#search-input{
+    height:45px;
+}
+.submit{
+    background-color:#6991e3;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    color: #e1e6f1;
+}
+.current-weather{
+    border: 1px solid black;
+}
