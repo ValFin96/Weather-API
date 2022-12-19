@@ -1,5 +1,5 @@
-var searchButton = document.querySelector(".submit");
-var inputValue = document.querySelector(".inputValue");
+var searchButton = $(".submit");
+var inputValue = $(".inputValue");
 
 $(document).ready(function(){
    searchButton.on("click",function (event) {
