@@ -9,21 +9,32 @@ var errorBodyEl = document.querySelector(".error");
 var APIKey = "424fc59a72d6aabfd6345140f77468d2"
 var searchArray = [];
 
-renderInitialHistory();
+// function to get elements from local storage and render them to the page 
+// function renderInitialHistory() {
+//     var storedHistory = JSON.parse(localStorage.getItem('searchHistory'));
+//     if (storedHistory) {
+//         searchArray = storedHistory;
+//     }
+//     renderHistory();
+// }
+// function to render the search history
+// document.addEventListener('DOMContentLoaded', renderInitialHistory);
+
 searchButton.addEventListener("click", handleSearchFormSubmit);
 
-// function handleSearchHistoryClick(e) {
-//     // Don't do search if current elements is not a search history button
-//     if (!e.target.matches('.btn-history')) {
-//         return;
-//     }
+// event handler for search history buttons
+function handleSearchHistoryClick(e) {
+    // Don't do search if current elements is not a search history button
+    if (!e.target.matches('.btn-history')) {
+        return;
+    }
 
-//     var btn = e.target;
-//     var search = btn.getAttribute('data-search');
-//     fetchCoords(search);
-// }
+    var btn = e.target;
+    var search = btn.getAttribute('data-search');
+    fetchCoords(search);
+}
 
-// historyContainer.addEventListener('click', handleSearchHistoryClick);
+historyContainer.addEventListener('click', handleSearchHistoryClick);
 
 // Once a button clicked fetch the city name and coordinates
 function handleSearchFormSubmit(event) {
@@ -75,24 +86,51 @@ function addHistory(cityName){
     localStorage.setItem('searchHistory', searchArray);
     renderHistory();
 }
-// Append search input to the current weather element 
+
+// Append search input to the current weather element  
 function renderHistory(){
     historyContainer.innerHTML = '';
+    // create a clear history button and hide it
+    var clearBtn = document.createElement('button');
+    clearBtn.setAttribute('class', 'btn btn-light btn-clear');
+    clearBtn.setAttribute('style', 'display: none');
+    
+    clearBtn.textContent = 'Clear History';
+    historyContainer.append(clearBtn);
+    // if there is a search history, show the clear history button
+    if(searchArray.length > 0){
+        clearBtn.setAttribute('style', 'display: inline-block');
+    }
+
+
+    // loop through the search history array	
     for(var i = searchArray.length -1; i>=0; i--){
         var btn = document.createElement('button');
         btn.setAttribute('data-search', searchArray[i]);
+        // add style to the search history buttons
+        btn.setAttribute('class', 'btn btn-secondary btn-block');
+        // display buttons on top of each other
+        btn.setAttribute('style', 'display: block');
         btn.textContent = searchArray[i];
         historyContainer.append(btn);
     }
 }
-// gets the history from local storage
-function renderInitialHistory(){
-    var storedHistory = localStorage.getItem('searchHistory');
-    if (storedHistory){
-        // searchArray = JSON.parse(storedHistory);
+// add event listener to the search history buttons
+historyContainer.addEventListener('click', function(e){
+    if(e.target.matches('button')){
+        var search = e.target.getAttribute('data-search');
+        fetchCoords(search);
     }
-    renderHistory();
-}
+});
+
+// gets the history from local storage   
+// function renderInitialHistory(){
+//     var storedHistory = localStorage.getItem('searchHistory');
+//     if (storedHistory){
+//         // searchArray = JSON.parse(storedHistory);
+//     }
+//     renderHistory();
+// }
 // Function to fetch data from API and render it to the page
 function getWeather(city, coord) {
     var { lat, lon } = coord;
@@ -134,14 +172,14 @@ function getWeather(city, coord) {
         var windEl = document.createElement('p');
         var humidityEl = document.createElement('p');
         card.setAttribute('class', 'card');
-        cardBody.setAttribute('class', 'card')
+        // cardBody.setAttribute('class', 'card')
         card.append(cardBody);
         heading.textContent = `${city} (${date})`
         icon.setAttribute('src', iconUrl);
         heading.append(icon);
-        tempEl.textContent = `Temp: ${temp}`;
-        windEl.textContent = `Wind: ${wind.speed}` 
-        humidityEl.textContent = `Humidity: ${humidity}`
+        tempEl.textContent = `Temp: ${temp} °F`;
+        windEl.textContent = `Wind: ${wind.speed} MPH` 
+        humidityEl.textContent = `Humidity: ${humidity} %`
         cardBody.append(heading, tempEl, windEl, humidityEl)
 
         currentWeatherEl.append(card)
@@ -149,9 +187,9 @@ function getWeather(city, coord) {
 
 // get 5 day forecast and render it to the page 
     function renderForecast(dailyForecast) {
-        var startDt = dayjs().add(1,'day').startOf('day').unix();
-        var endDt = dayjs().add(7,'day').startOf('day').unix();
-        // console.log(dailyForecast)
+        var startDt = dayjs().add(1,'day').startOf('day').unix(); // 1 day from now
+        var endDt = dayjs().add(6,'day').startOf('day').unix();  // 6 days from now
+        console.log(dailyForecast)
         // console.log(startDt, endDt);
         
         var headingCol = document.createElement('div');
@@ -200,7 +238,7 @@ function renderForecastCard(forecast) {
 
     col.setAttribute('class', 'col-md');
     col.classList.add('five-day-card');
-    card.setAttribute('class', 'card bg-primary h-100 text-white');
+    card.setAttribute('class', 'card bg-secondary h-100 text-white');
     cardBody.setAttribute('class', 'card-body p-2');
     cardTitle.setAttribute('class', 'card-title');
     tempEl.setAttribute('class', 'card-text');
@@ -214,41 +252,6 @@ function renderForecastCard(forecast) {
     tempEl.textContent = `Temp: ${tempF} °F`;
     windEl.textContent = `Wind: ${windMph} MPH`;
     humidityEl.textContent = `Humidity: ${humidity} %`;
-
-   fiveDaysWeatherEl.append(col);
-
-
-    // get variables temp humidity 
-
-
-    // create elements for a card
-
-    // append all elements to each other, set attributes
-
-    // add textcontent to all elemments and appensd to the main container
+    fiveDaysWeatherEl.append(col);
 }
-
-    // function to update history in local storage, then update display history
-    // check if the search item is in the array
-    // renderHistoryFunction - if you the city already exists in array creating buttons
-
-
-
-
-    // currentDate.textContent = dayjs().format('DD/MM/YYYY');
-    // fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + userInput + "&appid=" + APIKey)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         console.log(data);
-    //         for (i=0; i<5; i++){
-    //           document.getElementById('tempDay' + (i+1)).innerHTML = "Temp: " + data.list[i].main.temp
-    //         }
-    //         for (i=0; i<5; i++){
-    //             document.getElementById('humidityDay' + (i+1)).innerHTML = "Humidity: " + data.list[i].main.humidity
-    //           }
-    //           for (i=0; i<5; i++){
-    //             document.getElementById('windDay' + (i+1)).innerHTML = "Wind: " + data.list[i].wind.speed
-    //           }
-    //     })
-// }
 

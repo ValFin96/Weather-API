@@ -22,6 +22,10 @@ button{
     height: 30px;
     color: #e1e6f1;
 }
-.current-weather{
-    /* border: 1px solid black; */
+
+.btn{
+    margin: 5px;
+}
+.navbar{
+    background: linear-gradient(76.8deg, rgb(121, 45, 129) 3.6%, rgb(36, 31, 98) 90.4%);
 }
