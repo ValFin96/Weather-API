@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
     <title>Weather Dashboard</title>
 </head>
 <body>
+    <div class="error"></div>
     <nav class="navbar navbar-dark bg-dark justify-content-md-center">
         <a class="navbar-brand"><h1>Weather Dashboard</h1></a>
       </nav>
@@ -24,100 +25,87 @@
             <input placeholder="San Diego" type="text" class="inputValue" >
             </div>
             <div class="row my-3">
-             <input type="submit" class="submit" value ="Search">
+             <button type="submit" class="submit">Search</button>
             </div>
             <div class="row my-3">
                 <hr>
             </div>
+            <!-- Search history will be appended as buttons below -->
+            <div class="search-history"></div>
 
-            <div class="row ">
-                <button class="btn btn-secondary">Atlanta</button>
-            </div>
-            <div class="row mt-3">
-                <button class="btn btn-secondary">Denver</button>
-            </div>
-            <div class="row mt-3">
-                <button class="btn btn-secondary">Seattle</button>
-            </div>
-            <div class = "row mt-3">
-                <button class="btn btn-secondary">San Francisco</button>
-            </div>
-            <div class = "row mt-3">
-                <button class="btn btn-secondary">Orlando</button>
-            </div>
-            <div class = "row mt-3">
-                <button class="btn btn-secondary">New York</button>
-            </div>
-            <div class = "row mt-3">
-                <button class="btn btn-secondary">Chicago</button>
-            </div>
-            <div class = "row mt-3">
-                <button class="btn btn-secondary">Austin</button>
-            </div>
+
         </div>
         <div class="col-8 mx-5">
-            <div class="row current-weather">
-                <div>Atlanta <span class="current-date">(17/12/2022)</span>
-                <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
-                </div>
-                <div>Temp</div>
-                <div>Wind</div>
-                <div>Humidity</div>
-            </div>
+            <div class="row current-weather"></div>
             
-            <div class="row 5-day-weather">
+             <div class="row five-day-weather">
+                <!--
                 <div class="col">
-                    <div> <span class="current-date">(17/12/2022)</span>
+                    <div> <span class="dateDay1">(17/12/2022)</span>
                     <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
                     </div>
-                    <div>Temp</div>
-                    <div>Wind</div>
-                    <div>Humidity</div>
+                    <div id="tempDay1">Temp</div>
+                    <div id="windDay1">Wind</div>
+                    <div id="humidityDay1">Humidity</div>
                 </div>
 
                 <div class="col">
-                    <div> <span class="current-date">(17/12/2022)</span>
+                    <div> <span class="dateDay2">(17/12/2022)</span>
                     <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
                     </div>
-                    <div>Temp</div>
-                    <div>Wind</div>
-                    <div>Humidity</div>
+                    <div id="tempDay2">Temp</div>
+                    <div id="windDay2">Wind</div>
+                    <div id="humidityDay2">Humidity</div>
                 </div>
 
                 <div class="col">
-                    <div> <span class="current-date">(17/12/2022)</span>
+                    <div> <span class="dateDay3">(17/12/2022)</span>
                     <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
                     </div>
-                    <div>Temp</div>
-                    <div>Wind</div>
-                    <div>Humidity</div>
+                    <div id="tempDay3">Temp</div>
+                    <div id="windDay3">Wind</div>
+                    <div id="humidityDay3">Humidity</div>
                 </div>
 
                 <div class="col">
-                    <div> <span class="current-date">(17/12/2022)</span>
+                    <div> <span class="dateDay4">(17/12/2022)</span>
                     <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
                     </div>
-                    <div>Temp</div>
-                    <div>Wind</div>
-                    <div>Humidity</div>
+                    <div id="tempDay4">Temp</div>
+                    <div id="windDay4">Wind</div>
+                    <div id="humidityDay4">Humidity</div>
                 </div>
                 
                 <div class="col">
-                    <div> <span class="current-date">(17/12/2022)</span>
+                    <div> <span class="dateDay5">(17/12/2022)</span>
                     <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather-icon" class="w-icon">
                     </div>
-                    <div>Temp</div>
-                    <div>Wind</div>
-                    <div>Humidity</div>
-                </div>
-            </div>
+                    <div id="tempDay5">Temp</div>
+                    <div id="windDay5">Wind</div>
+                    <div id="humidityDay5">Humidity</div>
+                </div>-->
+            </div> 
             
         </div>
         </div>
     
     
-    <script>jQuery.noConflict();</script>
     <script src="./assets/js/script.js"></script>
-    
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/dayjs.min.js"
+      integrity="sha512-0fcCRl828lBlrSCa8QJY51mtNqTcHxabaXVLPgw/jPA5Nutujh6CbTdDgRzl9aSPYW/uuE7c4SffFUQFBAy6lg=="
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/utc.min.js" 
+      integrity="sha512-m00bfmYnAl3plEBlQfeQUhw/U2uvmw29V2+jxSWpAjankMWS+zAsjezbKWDEJNXqWq9o9qQZSOiA2RKDpa4D5w==" 
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/timezone.min.js" 
+      integrity="sha512-pslqxxHAYPCxaSeFSmXXxDkLejD5dbFVC66aiVq0z4v7VTJBU+wqcG1OpNh4p3MjS2D6NCwz/H2QmSc7dXxryg==" 
+      crossorigin="anonymous"
+    ></script>
+
 </body>
 </html>
