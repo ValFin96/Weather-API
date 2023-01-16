@@ -8,19 +8,22 @@ var historyContainer = document.querySelector(".search-history");
 var errorBodyEl = document.querySelector(".error");
 var APIKey = "424fc59a72d6aabfd6345140f77468d2"
 var searchArray = [];
+var clearBtn = document.createElement('button'); 
 
 // function to get elements from local storage and render them to the page 
-// function renderInitialHistory() {
-//     var storedHistory = JSON.parse(localStorage.getItem('searchHistory'));
-//     if (storedHistory) {
-//         searchArray = storedHistory;
-//     }
-//     renderHistory();
-// }
+function renderInitialHistory() {
+    var storedHistory = JSON.parse(localStorage.getItem('searchHistory'));
+    if (storedHistory) {
+        searchArray = storedHistory;
+    }
+    renderHistory();
+}
 // function to render the search history
-// document.addEventListener('DOMContentLoaded', renderInitialHistory);
+document.addEventListener('DOMContentLoaded', renderInitialHistory);
 
+// add event listener to the search button
 searchButton.addEventListener("click", handleSearchFormSubmit);
+
 
 // event handler for search history buttons
 function handleSearchHistoryClick(e) {
@@ -67,7 +70,7 @@ function handleError(err) {
     // create a div element to hold the error message
     var errorEl = document.createElement('div');
     errorEl.setAttribute('class', 'alert alert-danger');
-    errorEl.textContent = 'Unable to connect! Please search again.';
+    errorEl.textContent = 'Error! Please check your internet connection or spelling';
     // append the error message to the page
     errorBodyEl.append(errorEl);
     // remove the error message after 3 seconds
@@ -78,33 +81,40 @@ function handleError(err) {
 
 
 // add history function, stores the searched city to the local storage
-function addHistory(cityName){
-    if(searchArray.indexOf(cityName) !== -1){
+function addHistory(cityName) {
+    if (searchArray.indexOf(cityName) !== -1) {
         return;
     }
     searchArray.push(cityName);
-    localStorage.setItem('searchHistory', searchArray);
+    localStorage.setItem('searchHistory', JSON.stringify(searchArray));
     renderHistory();
 }
 
-// Append search input to the current weather element  
-function renderHistory(){
+// Append search input to the current weather element 
+
+function renderHistory() {
     historyContainer.innerHTML = '';
     // create a clear history button and hide it
-    var clearBtn = document.createElement('button');
+    
     clearBtn.setAttribute('class', 'btn btn-light btn-clear');
     clearBtn.setAttribute('style', 'display: none');
-    
+
     clearBtn.textContent = 'Clear History';
     historyContainer.append(clearBtn);
     // if there is a search history, show the clear history button
-    if(searchArray.length > 0){
+    if (searchArray.length > 0) {
         clearBtn.setAttribute('style', 'display: inline-block');
     }
 
+    // add event listener to the clear history button
+    clearBtn.addEventListener('click', function () {
+        localStorage.clear();
+        searchArray = [];
+        historyContainer.innerHTML = '';
+    });
 
     // loop through the search history array	
-    for(var i = searchArray.length -1; i>=0; i--){
+    for (var i = searchArray.length - 1; i >= 0; i--) {
         var btn = document.createElement('button');
         btn.setAttribute('data-search', searchArray[i]);
         // add style to the search history buttons
@@ -116,21 +126,14 @@ function renderHistory(){
     }
 }
 // add event listener to the search history buttons
-historyContainer.addEventListener('click', function(e){
-    if(e.target.matches('button')){
+historyContainer.addEventListener('click', function (e) {
+    if (e.target.matches('button')) {
         var search = e.target.getAttribute('data-search');
         fetchCoords(search);
     }
 });
 
-// gets the history from local storage   
-// function renderInitialHistory(){
-//     var storedHistory = localStorage.getItem('searchHistory');
-//     if (storedHistory){
-//         // searchArray = JSON.parse(storedHistory);
-//     }
-//     renderHistory();
-// }
+
 // Function to fetch data from API and render it to the page
 function getWeather(city, coord) {
     var { lat, lon } = coord;
@@ -142,10 +145,9 @@ function getWeather(city, coord) {
         renderItems(name, data);
     }).catch(function (err) {
         console.error(err);
-        handleError(err);	
     });
 
-    
+
 
     // render the current weather and 5 day forecast
     function renderItems(city, data) {
@@ -153,7 +155,7 @@ function getWeather(city, coord) {
         renderForecast(data.list);
     }
 
-// get current weather and render it to the page 
+    // get current weather and render it to the page 
     function renderCurrentWeather(city, weather) {
         var date = dayjs().format('M/D/YYYY');
         var temp = weather.main.temp
@@ -178,20 +180,18 @@ function getWeather(city, coord) {
         icon.setAttribute('src', iconUrl);
         heading.append(icon);
         tempEl.textContent = `Temp: ${temp} °F`;
-        windEl.textContent = `Wind: ${wind.speed} MPH` 
+        windEl.textContent = `Wind: ${wind.speed} MPH`
         humidityEl.textContent = `Humidity: ${humidity} %`
         cardBody.append(heading, tempEl, windEl, humidityEl)
 
         currentWeatherEl.append(card)
     }
 
-// get 5 day forecast and render it to the page 
+    // get 5 day forecast and render it to the page 
     function renderForecast(dailyForecast) {
-        var startDt = dayjs().add(1,'day').startOf('day').unix(); // 1 day from now
-        var endDt = dayjs().add(6,'day').startOf('day').unix();  // 6 days from now
-        console.log(dailyForecast)
-        // console.log(startDt, endDt);
-        
+        var startDt = dayjs().add(1, 'day').startOf('day').unix(); // 1 day from now
+        var endDt = dayjs().add(6, 'day').startOf('day').unix();  // 6 days from now
+
         var headingCol = document.createElement('div');
         var heading = document.createElement('h4');
 
@@ -199,7 +199,7 @@ function getWeather(city, coord) {
         heading.textContent = '5-Day Forecast:';
         headingCol.append(heading);
 
-        fiveDaysWeatherEl.innerHTML = ''; 
+        fiveDaysWeatherEl.innerHTML = '';
         fiveDaysWeatherEl.append(headingCol);
 
         for (var i = 0; i < dailyForecast.length; i++) {
