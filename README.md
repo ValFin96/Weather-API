@@ -3,7 +3,7 @@
 ## Description
 
 A Weather dashboard that allow users search for weather forecast anywhere in the world using Openweather API. The weather dashboard displays current weather data along with the 5-day forecast for this particular city. Users searches are stored in the local storage and retrieved every time users come back to the application.
-[Link to the deployed application](https://valfin96.github.io/Work-Day-Scheduler/)
+[Link to the deployed application](https://valfin96.github.io/Weather-API/)
 
 ## How it works
 

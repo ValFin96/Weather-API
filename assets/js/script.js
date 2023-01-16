@@ -5,6 +5,7 @@ var inputValue = document.querySelector(".inputValue");
 var currentCity = document.querySelector("#currentCity");
 var currentDate = document.querySelector(".current-date")
 var historyContainer = document.querySelector(".search-history");
+var clearHistoryBtn = document.querySelector(".clearHistory");
 var errorBodyEl = document.querySelector(".error");
 var APIKey = "424fc59a72d6aabfd6345140f77468d2"
 var searchArray = [];
@@ -35,6 +36,7 @@ function handleSearchHistoryClick(e) {
     var btn = e.target;
     var search = btn.getAttribute('data-search');
     fetchCoords(search);
+    console.log("line 38");
 }
 
 historyContainer.addEventListener('click', handleSearchHistoryClick);
@@ -44,6 +46,7 @@ function handleSearchFormSubmit(event) {
     event.preventDefault();
     var searchCity = inputValue.value.trim();
     fetchCoords(searchCity);
+    console.log("line 47")
 }
 
 // Fetch searched city coordinates from API
@@ -62,6 +65,7 @@ function fetchCoords(search) {
     }).catch(function (err) {
         console.error(err);
         handleError(err);
+        console.log("line 67");
     });
 
 }
@@ -100,7 +104,7 @@ function renderHistory() {
     clearBtn.setAttribute('style', 'display: none');
 
     clearBtn.textContent = 'Clear History';
-    historyContainer.append(clearBtn);
+    clearHistoryBtn.append(clearBtn);
     // if there is a search history, show the clear history button
     if (searchArray.length > 0) {
         clearBtn.setAttribute('style', 'display: inline-block');
@@ -111,6 +115,7 @@ function renderHistory() {
         localStorage.clear();
         searchArray = [];
         historyContainer.innerHTML = '';
+        clearHistoryBtn.innerHTML = '';
     });
 
     // loop through the search history array	
@@ -191,7 +196,7 @@ function getWeather(city, coord) {
     function renderForecast(dailyForecast) {
         var startDt = dayjs().add(1, 'day').startOf('day').unix(); // 1 day from now
         var endDt = dayjs().add(6, 'day').startOf('day').unix();  // 6 days from now
-
+        console.log(dailyForecast);
         var headingCol = document.createElement('div');
         var heading = document.createElement('h4');
 
@@ -206,7 +211,7 @@ function getWeather(city, coord) {
             // First filters through all of the data and returns only data that falls between one day after the current data and up to 5 days later.
             if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
                 // Then filters through the data and returns only data captured at noon for each day 
-                if (dailyForecast[i].dt_txt.slice(11, 13) == "12") {
+                if (dailyForecast[i].dt_txt.includes("09:00:00")) {
                     // console.log(dailyForecast[i]);
                     renderForecastCard(dailyForecast[i]);
                 }
